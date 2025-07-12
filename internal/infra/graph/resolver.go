@@ -1,6 +1,8 @@
 package graph
 
-import "github.com/victorgiudicissi/challenge-clean-architecture/internal/usecase"
+import (
+	"github.com/victorgiudicissi/challenge-clean-architecture/internal/usecase"
+)
 
 // This file will not be regenerated automatically.
 //
@@ -8,5 +10,5 @@ import "github.com/victorgiudicissi/challenge-clean-architecture/internal/usecas
 
 type Resolver struct {
 	CreateOrderUseCase usecase.CreateOrderUseCase
-	ListOrderUseCase   *usecase.ListOrderUseCase
+	ListOrderUseCase   usecase.ListOrderUseCase
 }

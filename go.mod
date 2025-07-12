@@ -1,4 +1,4 @@
-module github.com/devfullcycle/20-CleanArch
+module github.com/victorgiudicissi/challenge-clean-architecture
 
 go 1.23.0
 

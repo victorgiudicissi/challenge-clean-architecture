@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 
@@ -12,7 +11,6 @@ import (
 	"github.com/streadway/amqp"
 	"github.com/victorgiudicissi/challenge-clean-architecture/configs"
 	"github.com/victorgiudicissi/challenge-clean-architecture/internal/event/handler"
-	"github.com/victorgiudicissi/challenge-clean-architecture/internal/infra/database/migrations"
 	"github.com/victorgiudicissi/challenge-clean-architecture/internal/infra/graph"
 	"github.com/victorgiudicissi/challenge-clean-architecture/internal/infra/grpc/pb"
 	"github.com/victorgiudicissi/challenge-clean-architecture/internal/infra/grpc/service"
@@ -21,7 +19,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	// mysql
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -37,12 +34,7 @@ func main() {
 	}
 	defer db.Close()
 
-	// Run database migrations
-	if err := migrations.RunMigrations(db); err != nil {
-		log.Fatalf("Failed to run migrations: %v", err)
-	}
-
-	rabbitMQChannel := getRabbitMQChannel()
+	rabbitMQChannel := getRabbitMQChannel(configs)
 
 	eventDispatcher := events.NewEventDispatcher()
 	eventDispatcher.Register("OrderCreated", &handler.OrderCreatedHandler{
@@ -82,8 +74,8 @@ func main() {
 	http.ListenAndServe(":"+configs.GraphQLServerPort, nil)
 }
 
-func getRabbitMQChannel() *amqp.Channel {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+func getRabbitMQChannel(configs *configs.Conf) *amqp.Channel {
+	conn, err := amqp.Dial("amqp://guest:guest@" + configs.RabbitMQHost + ":" + configs.RabbitMQPort + "/")
 	if err != nil {
 		panic(err)
 	}

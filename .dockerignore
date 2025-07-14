@@ -1,0 +1,10 @@
+# Exclude Docker volumes and cache directories from build context
+.docker/
+
+# Exclude VCS and tooling files
+.git/
+.gitignore
+
+# OS / editor junk
+*.log
+.DS_Store

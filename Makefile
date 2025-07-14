@@ -9,16 +9,6 @@ help:
 	@echo "  make run       - Run the application directly with Go"
 
 # Start all services using Docker Compose
-.PHONY: up
-up:
-	docker-compose up -d --build
-
 .PHONY: run
 run:
-	go run ./...
-
-
-# Generate Wire code
-.PHONY: wire
-wire:
-	cd cmd/ordersystem && wire
+	docker-compose up --build
